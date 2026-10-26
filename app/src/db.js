@@ -78,11 +78,8 @@ export function createRepository(pool) {
 
     async searchItems(ownerId, term) {
       const { rows } = await pool.query(
-        "SELECT id, name, description, created_at FROM items WHERE owner_id = " +
-          ownerId +
-          " AND name ILIKE '%" +
-          term +
-          "%' ORDER BY id",
+        'SELECT id, name, description, created_at FROM items WHERE owner_id = $1 AND name ILIKE $2 ORDER BY id',
+        [ownerId, `%${term}%`],
       );
       return rows;
     },
