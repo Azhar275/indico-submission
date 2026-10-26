@@ -149,6 +149,33 @@ test('create item validates input', async () => {
   assert.equal(res.status, 400);
 });
 
+test('NUL bytes in input are rejected with 400, not a server error', async () => {
+  const token = await login('alice@example.com');
+  const created = await request(app)
+    .post('/items')
+    .set('authorization', `Bearer ${token}`)
+    .send({ name: 'bad\u0000name' });
+  assert.equal(created.status, 400);
+
+  const search = await request(app)
+    .get('/items/search')
+    .query({ q: 'a\u0000b' })
+    .set('authorization', `Bearer ${token}`);
+  assert.equal(search.status, 400);
+});
+
+test('search returns only matching items', async () => {
+  const token = await login('alice@example.com');
+  await request(app).post('/items').set('authorization', `Bearer ${token}`).send({ name: 'Laptop' });
+  await request(app).post('/items').set('authorization', `Bearer ${token}`).send({ name: 'Phone' });
+  const res = await request(app)
+    .get('/items/search')
+    .query({ q: 'Lap' })
+    .set('authorization', `Bearer ${token}`);
+  assert.equal(res.status, 200);
+  assert.deepEqual(res.body.map((i) => i.name), ['Laptop']);
+});
+
 test('users cannot read items owned by someone else', async () => {
   const alice = await login('alice@example.com');
   const bob = await login('bob@example.com');

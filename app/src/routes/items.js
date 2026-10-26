@@ -1,10 +1,19 @@
 import { Router } from 'express';
 import { z } from 'zod';
 
+const text = (max) =>
+  z
+    .string()
+    .trim()
+    .max(max)
+    .refine((value) => !value.includes('\u0000'), 'invalid characters');
+
 const createItemSchema = z.object({
-  name: z.string().trim().min(1).max(100),
-  description: z.string().trim().max(1000).default(''),
+  name: text(100).pipe(z.string().min(1)),
+  description: text(1000).default(''),
 });
+
+const searchSchema = text(100).default('');
 
 const idSchema = z.coerce.number().int().positive();
 
@@ -16,8 +25,11 @@ export function itemsRouter({ repo }) {
   });
 
   router.get('/search', async (req, res) => {
-    const term = typeof req.query.q === 'string' ? req.query.q : '';
-    res.json(await repo.searchItems(req.user.id, term));
+    const term = searchSchema.safeParse(req.query.q);
+    if (!term.success) {
+      return res.status(400).json({ error: 'invalid_request' });
+    }
+    return res.json(await repo.searchItems(req.user.id, term.data));
   });
 
   router.get('/:id', async (req, res) => {
