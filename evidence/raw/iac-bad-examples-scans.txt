@@ -1,0 +1,305 @@
+##### checkov iam-wildcard-policy (failed checks only)
+Passed checks: 6, Failed checks: 9
+FAILED CKV_AWS_355 aws_iam_policy.app_deploy - Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions
+FAILED CKV_AWS_290 aws_iam_policy.app_deploy - Ensure IAM policies does not allow write access without constraints
+FAILED CKV_AWS_287 aws_iam_policy.app_deploy - Ensure IAM policies does not allow credentials exposure
+FAILED CKV_AWS_286 aws_iam_policy.app_deploy - Ensure IAM policies does not allow privilege escalation
+FAILED CKV_AWS_289 aws_iam_policy.app_deploy - Ensure IAM policies does not allow permissions management / resource exposure without constraints
+FAILED CKV_AWS_62 aws_iam_policy.app_deploy - Ensure IAM policies that allow full "*-*" administrative privileges are not created
+FAILED CKV_AWS_288 aws_iam_policy.app_deploy - Ensure IAM policies does not allow data exfiltration
+FAILED CKV_AWS_63 aws_iam_policy.app_deploy - Ensure no IAM policies documents allow "*" as a statement's actions
+FAILED CKV2_AWS_40 aws_iam_policy.app_deploy - Ensure AWS IAM policy does not allow full IAM privileges
+##### trivy iam-wildcard-policy
+
+Report Summary
+
+┌────────┬───────────┬───────────────────┐
+│ Target │   Type    │ Misconfigurations │
+├────────┼───────────┼───────────────────┤
+│ .      │ terraform │         0         │
+└────────┴───────────┴───────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+##### checkov public-database (failed checks only)
+Passed checks: 13, Failed checks: 11
+FAILED CKV_AWS_226 aws_db_instance.app - Ensure DB instance gets all minor upgrades automatically
+FAILED CKV_AWS_293 aws_db_instance.app - Ensure that AWS database instances have deletion protection enabled
+FAILED CKV_AWS_157 aws_db_instance.app - Ensure that RDS instances have Multi-AZ enabled
+FAILED CKV_AWS_17 aws_db_instance.app - Ensure all data stored in RDS is not publicly accessible
+FAILED CKV_AWS_129 aws_db_instance.app - Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled
+FAILED CKV_AWS_353 aws_db_instance.app - Ensure that RDS instances have performance insights enabled
+FAILED CKV_AWS_118 aws_db_instance.app - Ensure that enhanced monitoring is enabled for Amazon RDS instances
+FAILED CKV_AWS_16 aws_db_instance.app - Ensure all data stored in the RDS is securely encrypted at rest
+FAILED CKV_AWS_161 aws_db_instance.app - Ensure RDS database has IAM authentication enabled
+FAILED CKV2_AWS_30 aws_db_instance.app - Ensure Postgres RDS as aws_db_instance has Query Logging enabled
+FAILED CKV2_AWS_60 aws_db_instance.app - Ensure RDS instance with copy tags to snapshots is enabled
+##### trivy public-database
+
+Report Summary
+
+┌─────────┬───────────┬───────────────────┐
+│ Target  │   Type    │ Misconfigurations │
+├─────────┼───────────┼───────────────────┤
+│ .       │ terraform │         0         │
+├─────────┼───────────┼───────────────────┤
+│ main.tf │ terraform │         6         │
+└─────────┴───────────┴───────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+main.tf (terraform)
+===================
+Tests: 6 (SUCCESSES: 0, FAILURES: 6)
+Failures: 6 (UNKNOWN: 0, LOW: 1, MEDIUM: 3, HIGH: 2, CRITICAL: 0)
+
+AWS-0077 (MEDIUM): Instance has very low backup retention period.
+════════════════════════════════════════
+RDS backup retention for clusters defaults to 1 day, this may not be enough to identify and respond to an issue. Backup retention periods should be set to a period that is a balance on cost and limiting risk.
+
+
+See https://avd.aquasec.com/misconfig/aws-0077
+────────────────────────────────────────
+ main.tf:15-27
+────────────────────────────────────────
+  15 ┌ resource "aws_db_instance" "app" {
+  16 │   identifier                  = "app-db"
+  17 │   engine                      = "postgres"
+  18 │   engine_version              = "17"
+  19 │   instance_class              = "db.t4g.micro"
+  20 │   allocated_storage           = 20
+  21 │   username                    = "app_admin"
+  22 │   manage_master_user_password = true
+  23 └   db_subnet_group_name        = var.public_subnet_group
+  ..   
+────────────────────────────────────────
+
+
+AWS-0080 (HIGH): Instance does not have storage encryption enabled.
+════════════════════════════════════════
+Encryption should be enabled for an RDS Database instances.
+When enabling encryption by setting the kms_key_id.
+
+
+See https://avd.aquasec.com/misconfig/aws-0080
+────────────────────────────────────────
+ main.tf:15-27
+────────────────────────────────────────
+  15 ┌ resource "aws_db_instance" "app" {
+  16 │   identifier                  = "app-db"
+  17 │   engine                      = "postgres"
+  18 │   engine_version              = "17"
+  19 │   instance_class              = "db.t4g.micro"
+  20 │   allocated_storage           = 20
+  21 │   username                    = "app_admin"
+  22 │   manage_master_user_password = true
+  23 └   db_subnet_group_name        = var.public_subnet_group
+  ..   
+────────────────────────────────────────
+
+
+AWS-0133 (LOW): Instance does not have performance insights enabled.
+════════════════════════════════════════
+Enabling Performance insights allows for greater depth in monitoring data.
+For example, information about active sessions could help diagose a compromise or assist in the investigation
+
+
+See https://avd.aquasec.com/misconfig/aws-0133
+────────────────────────────────────────
+ main.tf:15-27
+────────────────────────────────────────
+  15 ┌ resource "aws_db_instance" "app" {
+  16 │   identifier                  = "app-db"
+  17 │   engine                      = "postgres"
+  18 │   engine_version              = "17"
+  19 │   instance_class              = "db.t4g.micro"
+  20 │   allocated_storage           = 20
+  21 │   username                    = "app_admin"
+  22 │   manage_master_user_password = true
+  23 └   db_subnet_group_name        = var.public_subnet_group
+  ..   
+────────────────────────────────────────
+
+
+AWS-0176 (MEDIUM): Instance does not have IAM Authentication enabled
+════════════════════════════════════════
+Ensure IAM Database Authentication is enabled for RDS database instances to manage database access
+
+See https://avd.aquasec.com/misconfig/aws-0176
+────────────────────────────────────────
+ main.tf:15-27
+────────────────────────────────────────
+  15 ┌ resource "aws_db_instance" "app" {
+  16 │   identifier                  = "app-db"
+  17 │   engine                      = "postgres"
+  18 │   engine_version              = "17"
+  19 │   instance_class              = "db.t4g.micro"
+  20 │   allocated_storage           = 20
+  21 │   username                    = "app_admin"
+  22 │   manage_master_user_password = true
+  23 └   db_subnet_group_name        = var.public_subnet_group
+  ..   
+────────────────────────────────────────
+
+
+AWS-0177 (MEDIUM): Instance does not have Deletion Protection enabled
+════════════════════════════════════════
+Ensure deletion protection is enabled for RDS database instances.
+
+See https://avd.aquasec.com/misconfig/aws-0177
+────────────────────────────────────────
+ main.tf:15-27
+────────────────────────────────────────
+  15 ┌ resource "aws_db_instance" "app" {
+  16 │   identifier                  = "app-db"
+  17 │   engine                      = "postgres"
+  18 │   engine_version              = "17"
+  19 │   instance_class              = "db.t4g.micro"
+  20 │   allocated_storage           = 20
+  21 │   username                    = "app_admin"
+  22 │   manage_master_user_password = true
+  23 └   db_subnet_group_name        = var.public_subnet_group
+  ..   
+────────────────────────────────────────
+
+
+AWS-0180 (HIGH): Instance has Public Access enabled
+════════════════════════════════════════
+Ensures RDS instances and RDS Cluster instances are not launched into the public cloud.
+
+See https://avd.aquasec.com/misconfig/aws-0180
+────────────────────────────────────────
+ main.tf:25
+   via main.tf:15-27 (aws_db_instance.app)
+────────────────────────────────────────
+  15   resource "aws_db_instance" "app" {
+  ..   
+  25 [   publicly_accessible         = true
+  ..   
+  27   }
+────────────────────────────────────────
+
+
+##### checkov password-in-state (failed checks only)
+Passed checks: 7, Failed checks: 10
+FAILED CKV_AWS_226 aws_db_instance.app - Ensure DB instance gets all minor upgrades automatically
+FAILED CKV_AWS_293 aws_db_instance.app - Ensure that AWS database instances have deletion protection enabled
+FAILED CKV_AWS_157 aws_db_instance.app - Ensure that RDS instances have Multi-AZ enabled
+FAILED CKV_AWS_129 aws_db_instance.app - Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled
+FAILED CKV_AWS_353 aws_db_instance.app - Ensure that RDS instances have performance insights enabled
+FAILED CKV_AWS_118 aws_db_instance.app - Ensure that enhanced monitoring is enabled for Amazon RDS instances
+FAILED CKV_AWS_161 aws_db_instance.app - Ensure RDS database has IAM authentication enabled
+FAILED CKV2_AWS_30 aws_db_instance.app - Ensure Postgres RDS as aws_db_instance has Query Logging enabled
+FAILED CKV2_AWS_60 aws_db_instance.app - Ensure RDS instance with copy tags to snapshots is enabled
+FAILED CKV2_ITEMS_1 aws_db_instance.app - Ensure RDS instances do not receive a plaintext password through Terraform; use manage_master_user_password or password_wo
+##### trivy password-in-state
+
+Report Summary
+
+┌─────────┬───────────┬───────────────────┐
+│ Target  │   Type    │ Misconfigurations │
+├─────────┼───────────┼───────────────────┤
+│ .       │ terraform │         0         │
+├─────────┼───────────┼───────────────────┤
+│ main.tf │ terraform │         4         │
+└─────────┴───────────┴───────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+main.tf (terraform)
+===================
+Tests: 4 (SUCCESSES: 0, FAILURES: 4)
+Failures: 4 (UNKNOWN: 0, LOW: 1, MEDIUM: 3, HIGH: 0, CRITICAL: 0)
+
+AWS-0077 (MEDIUM): Instance has very low backup retention period.
+════════════════════════════════════════
+RDS backup retention for clusters defaults to 1 day, this may not be enough to identify and respond to an issue. Backup retention periods should be set to a period that is a balance on cost and limiting risk.
+
+
+See https://avd.aquasec.com/misconfig/aws-0077
+────────────────────────────────────────
+ main.tf:6-17
+────────────────────────────────────────
+   6 ┌ resource "aws_db_instance" "app" {
+   7 │   identifier          = "app-db"
+   8 │   engine              = "postgres"
+   9 │   engine_version      = "17"
+  10 │   instance_class      = "db.t4g.micro"
+  11 │   allocated_storage   = 20
+  12 │   username            = "app_admin"
+  13 │   password            = var.db_password
+  14 └   storage_encrypted   = true
+  ..   
+────────────────────────────────────────
+
+
+AWS-0133 (LOW): Instance does not have performance insights enabled.
+════════════════════════════════════════
+Enabling Performance insights allows for greater depth in monitoring data.
+For example, information about active sessions could help diagose a compromise or assist in the investigation
+
+
+See https://avd.aquasec.com/misconfig/aws-0133
+────────────────────────────────────────
+ main.tf:6-17
+────────────────────────────────────────
+   6 ┌ resource "aws_db_instance" "app" {
+   7 │   identifier          = "app-db"
+   8 │   engine              = "postgres"
+   9 │   engine_version      = "17"
+  10 │   instance_class      = "db.t4g.micro"
+  11 │   allocated_storage   = 20
+  12 │   username            = "app_admin"
+  13 │   password            = var.db_password
+  14 └   storage_encrypted   = true
+  ..   
+────────────────────────────────────────
+
+
+AWS-0176 (MEDIUM): Instance does not have IAM Authentication enabled
+════════════════════════════════════════
+Ensure IAM Database Authentication is enabled for RDS database instances to manage database access
+
+See https://avd.aquasec.com/misconfig/aws-0176
+────────────────────────────────────────
+ main.tf:6-17
+────────────────────────────────────────
+   6 ┌ resource "aws_db_instance" "app" {
+   7 │   identifier          = "app-db"
+   8 │   engine              = "postgres"
+   9 │   engine_version      = "17"
+  10 │   instance_class      = "db.t4g.micro"
+  11 │   allocated_storage   = 20
+  12 │   username            = "app_admin"
+  13 │   password            = var.db_password
+  14 └   storage_encrypted   = true
+  ..   
+────────────────────────────────────────
+
+
+AWS-0177 (MEDIUM): Instance does not have Deletion Protection enabled
+════════════════════════════════════════
+Ensure deletion protection is enabled for RDS database instances.
+
+See https://avd.aquasec.com/misconfig/aws-0177
+────────────────────────────────────────
+ main.tf:6-17
+────────────────────────────────────────
+   6 ┌ resource "aws_db_instance" "app" {
+   7 │   identifier          = "app-db"
+   8 │   engine              = "postgres"
+   9 │   engine_version      = "17"
+  10 │   instance_class      = "db.t4g.micro"
+  11 │   allocated_storage   = 20
+  12 │   username            = "app_admin"
+  13 │   password            = var.db_password
+  14 └   storage_encrypted   = true
+  ..   
+────────────────────────────────────────
+
+

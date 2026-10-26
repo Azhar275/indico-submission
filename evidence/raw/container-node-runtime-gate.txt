@@ -1,0 +1,11 @@
+##### items-api:vulnerable
+Node.js runtime in image: v24.22.0
+Latest v24.x release: v24.22.1 (2026-10-20)
+FAIL: newer security release(s) on v24.x not applied: v24.22.1 (2026-10-20)
+Rebuild on v24.22.1 or later.
+exit=1
+##### items-api:fixed-runtime
+Node.js runtime in image: v24.22.1
+Latest v24.x release: v24.22.1 (2026-10-20)
+PASS: no newer security release on v24.x
+exit=0

@@ -1,0 +1,27 @@
+
+> items-api@1.0.0 test
+> node --test "test/**/*.test.js"
+
+✔ health returns ok (18.427709ms)
+✔ security headers are set and x-powered-by is hidden (3.70525ms)
+✔ login rejects wrong password (10.440125ms)
+✔ login rejects unknown user with the same response (53.1675ms)
+✔ login rejects malformed body (3.297458ms)
+✔ invalid JSON returns 400 without stack trace (3.912583ms)
+✔ compressed request bodies are rejected before parsing (3.725291ms)
+✔ items require a bearer token (2.589291ms)
+✔ items reject a tampered token (5.013334ms)
+✔ create and list items for the logged in user (4.854375ms)
+✔ create item validates input (5.173625ms)
+✔ NUL bytes in input are rejected with 400, not a server error (7.268792ms)
+✔ search returns only matching items (5.62925ms)
+✔ users cannot read items owned by someone else (7.001958ms)
+✔ unknown routes return 404 (2.743541ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 508.033041

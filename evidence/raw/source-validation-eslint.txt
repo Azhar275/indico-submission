@@ -1,0 +1,7 @@
+
+./app/src/config.js
+   6:45  warning  Generic Object Injection Sink                                                   security/detect-object-injection
+  18:16  warning  Found readFileSync from package "node:fs" with non literal argument at index 0  security/detect-non-literal-fs-filename
+
+✖ 2 problems (0 errors, 2 warnings)
+

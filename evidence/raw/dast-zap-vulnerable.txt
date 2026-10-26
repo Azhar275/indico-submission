@@ -1,0 +1,32 @@
+Starting ephemeral test environment (PostgreSQL + API) on an isolated Docker network
+ Network items-dast_default Creating 
+ Volume items-dast_db-data Creating 
+ Volume items-dast_db-data Creating 
+ Network items-dast_default Creating 
+ Volume items-dast_db-data Created 
+ Volume items-dast_db-data Created 
+ Network items-dast_default Created 
+ Network items-dast_default Created 
+ Container items-dast-db-1 Creating 
+ Container items-dast-db-1 Created 
+ Container items-dast-app-1 Creating 
+ Container items-dast-app-1 Created 
+ Container items-dast-db-1 Starting 
+ Container items-dast-db-1 Started 
+ Container items-dast-db-1 Waiting 
+ Container items-dast-db-1 Healthy 
+ Container items-dast-app-1 Starting 
+ Container items-dast-app-1 Started 
+ Container items-dast-db-1 Waiting 
+ Container items-dast-app-1 Waiting 
+ Container items-dast-db-1 Healthy 
+ Container items-dast-app-1 Healthy 
+{"msg":"seeded user","id":1}
+Authenticated as the seeded test user; ZAP will send the bearer token on every request
+2026-10-26 06:53:58,402 Using override, new target: http://app:3000
+2026-10-26 06:53:58,402 Number of Imported URLs: 8
+WARN-NEW: A Server Error response code was returned by the server [100000] x 2 
+WARN-NEW: Cross Site Scripting Weakness (Persistent in JSON Response) [40014] x 2 
+FAIL-NEW: SQL Injection [40018] x 1 
+FAIL-NEW: 1	FAIL-INPROG: 0	WARN-NEW: 2	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 118
+DAST gate FAILED: release-blocking alerts found (see FAIL-NEW lines above)

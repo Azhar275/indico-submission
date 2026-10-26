@@ -1,0 +1,43 @@
+
+Report Summary
+
+┌───────────────────┬──────┬─────────────────┐
+│      Target       │ Type │ Vulnerabilities │
+├───────────────────┼──────┼─────────────────┤
+│ package-lock.json │ npm  │        6        │
+└───────────────────┴──────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+package-lock.json (npm)
+=======================
+Total: 6 (UNKNOWN: 0, LOW: 0, MEDIUM: 2, HIGH: 3, CRITICAL: 1)
+
+┌──────────┬─────────────────┬──────────┬────────┬───────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+│ Library  │  Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version │                            Title                             │
+├──────────┼─────────────────┼──────────┼────────┼───────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ fast-jwt │ CVE-2026-107722 │ CRITICAL │ fixed  │ 6.2.4             │ 6.3.0         │ fast-jwt: Incomplete patch of CVE-2026-34950: Non-whitespace │
+│          │                 │          │        │                   │               │ key-prefix re-enables RSA→HS256 algorithm confusion          │
+│          │                 │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-107722                  │
+│          ├─────────────────┼──────────┤        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│          │ CVE-2026-107720 │ HIGH     │        │                   │ 6.3.1         │ fast-jwt: createVerifier accepts unsigned JWTs when key is   │
+│          │                 │          │        │                   │               │ '' or null and...                                            │
+│          │                 │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-107720                  │
+│          ├─────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│          │ CVE-2026-107723 │          │        │                   │ 6.3.0         │ fast-jwt : Silent claim-validator bypass when JWT payload is │
+│          │                 │          │        │                   │               │ a JSON array...                                              │
+│          │                 │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-107723                  │
+│          ├─────────────────┤          │        │                   │               ├──────────────────────────────────────────────────────────────┤
+│          │ CVE-2026-107724 │          │        │                   │               │ fast-jwt treats raw public JWK JSON as an HMAC secret,       │
+│          │                 │          │        │                   │               │ enabling HS256...                                            │
+│          │                 │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-107724                  │
+│          ├─────────────────┼──────────┤        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│          │ CVE-2026-107719 │ MEDIUM   │        │                   │ 6.3.4         │ fast-jwt: Verifier cache accepts expired JWTs without iat.   │
+│          │                 │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-107719                  │
+│          ├─────────────────┤          │        │                   ├───────────────┼──────────────────────────────────────────────────────────────┤
+│          │ CVE-2026-107721 │          │        │                   │ 6.3.0         │ fast-jwt clockTolerance: Infinity silently bypasses both exp │
+│          │                 │          │        │                   │               │ and nbf validation (and persists...                          │
+│          │                 │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-107721                  │
+└──────────┴─────────────────┴──────────┴────────┴───────────────────┴───────────────┴──────────────────────────────────────────────────────────────┘

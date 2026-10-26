@@ -1,0 +1,33 @@
+SonarQube Community 26.10.0.133078: SQL injection detection test
+Four JavaScript files with string-built SQL passed to node-postgres pool.query():
+
+----- a_param_pool.js
+export function repo(pool) {
+  return { search: (owner, term) => pool.query("SELECT * FROM items WHERE owner_id = " + owner + " AND name ILIKE '%" + term + "%'") };
+}
+----- b_module_pool.js
+import pg from 'pg';
+const pool = new pg.Pool();
+export const search = (owner, term) => pool.query("SELECT * FROM items WHERE owner_id = " + owner + " AND name ILIKE '%" + term + "%'");
+----- c_inner_pool.js
+import pg from 'pg';
+export function createRepository(config) {
+  const pool = new pg.Pool(config);
+  return { search: (owner, term) => pool.query(`SELECT * FROM items WHERE owner_id = ${owner} AND name ILIKE '%${term}%'`) };
+}
+----- d_express_direct.js
+import express from 'express';
+import pg from 'pg';
+const pool = new pg.Pool();
+const app = express();
+app.get('/search', async (req, res) => {
+  const r = await pool.query("SELECT * FROM items WHERE name ILIKE '%" + req.query.q + "%'");
+  res.json(r.rows);
+});
+export default app;
+
+----- Result
+Security issues: 1
+  [javascript:S5689] src/d_express_direct.js:4 This framework implicitly discloses version information by default. Make sure it is safe here.
+Security hotspots: 0
+SQL injection findings: 0 of 4 files

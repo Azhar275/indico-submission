@@ -1,0 +1,18 @@
+# npm audit report
+
+fast-jwt  <=6.3.3
+Severity: critical
+fast-jwt: Verifier cache accepts expired JWTs without iat. - https://github.com/advisories/GHSA-x937-hj6v-793p
+fast-jwt: createVerifier accepts unsigned JWTs when key is '' or null and algorithms is explicitly set - https://github.com/advisories/GHSA-8wpc-h4q6-8fxv
+fast-jwt: Incomplete patch of CVE-2026-34950: Non-whitespace key-prefix re-enables RSA→HS256 algorithm confusion - https://github.com/advisories/GHSA-ww5h-9m49-7xx4
+fast-jwt clockTolerance: Infinity silently bypasses both exp and nbf validation (and persists in the verifier cache) - https://github.com/advisories/GHSA-687g-22h4-j4w4
+fast-jwt : Silent claim-validator bypass when JWT payload is a JSON array - https://github.com/advisories/GHSA-5hjw-83fp-phq9
+fast-jwt treats raw public JWK JSON as an HMAC secret, enabling HS256 token forgery - https://github.com/advisories/GHSA-g3jj-5cmm-3hxx
+fix available via `npm audit fix --force`
+Will install fast-jwt@6.3.5, which is outside the stated dependency range
+node_modules/fast-jwt
+
+1 critical severity vulnerability
+
+To address all issues, run:
+  npm audit fix --force

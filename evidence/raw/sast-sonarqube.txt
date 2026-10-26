@@ -1,0 +1,6 @@
+Waiting for SonarQube at http://127.0.0.1:9000
+Running SonarScanner on ./app
+Quality gate: OK
+  vulnerabilities: actual=0 GT 0 -> OK
+Security issues: 0
+Security hotspots: 0

@@ -1,0 +1,41 @@
+
+Report Summary
+
+┌─────────┬───────────┬───────────────────┐
+│ Target  │   Type    │ Misconfigurations │
+├─────────┼───────────┼───────────────────┤
+│ .       │ terraform │         0         │
+├─────────┼───────────┼───────────────────┤
+│ main.tf │ terraform │         1         │
+└─────────┴───────────┴───────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+main.tf (terraform)
+===================
+Tests: 1 (SUCCESSES: 0, FAILURES: 1)
+Failures: 1 (UNKNOWN: 0, LOW: 0, MEDIUM: 1, HIGH: 0, CRITICAL: 0)
+
+AWS-0178 (MEDIUM): VPC does not have VPC Flow Logs enabled.
+════════════════════════════════════════
+VPC Flow Logs provide visibility into network traffic that traverses the VPC and can be used to detect anomalous traffic or insight during security workflows.
+
+
+See https://avd.aquasec.com/misconfig/aws-0178
+────────────────────────────────────────
+ main.tf:73-78
+────────────────────────────────────────
+  73 ┌ resource "aws_vpc" "main" {
+  74 │   cidr_block           = var.vpc_cidr
+  75 │   enable_dns_hostnames = true
+  76 │ 
+  77 │   tags = { Name = "${local.name}-vpc" }
+  78 └ }
+────────────────────────────────────────
+
+
+
+Policy gates for iac-trivy:
+PASS  no HIGH or CRITICAL misconfigurations

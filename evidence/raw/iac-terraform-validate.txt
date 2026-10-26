@@ -1,0 +1,3 @@
+terraform fmt: ok
+Success! The configuration is valid.
+
