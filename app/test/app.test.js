@@ -1,5 +1,6 @@
 import { test, beforeEach } from 'node:test';
 import { randomBytes } from 'node:crypto';
+import { brotliCompressSync } from 'node:zlib';
 import assert from 'node:assert/strict';
 import request from 'supertest';
 import bcrypt from 'bcryptjs';
@@ -99,6 +100,17 @@ test('invalid JSON returns 400 without stack trace', async () => {
     .send('{"email":');
   assert.equal(res.status, 400);
   assert.deepEqual(res.body, { error: 'invalid_request' });
+});
+
+test('compressed request bodies are rejected before parsing', async () => {
+  const body = brotliCompressSync(Buffer.from(JSON.stringify({ email: 'alice@example.com', password: PASSWORD })));
+  const res = await request(app)
+    .post('/auth/login')
+    .set('content-type', 'application/json')
+    .set('content-encoding', 'br')
+    .send(body);
+  assert.equal(res.status, 415);
+  assert.equal(res.body.token, undefined);
 });
 
 test('items require a bearer token', async () => {

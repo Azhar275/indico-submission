@@ -10,7 +10,7 @@ export function createApp({ repo, tokens, logger = console, loginRateLimit }) {
   app.disable('x-powered-by');
   app.set('trust proxy', 1);
   app.use(helmet());
-  app.use(express.json({ limit: '10kb' }));
+  app.use(express.json({ limit: '10kb', inflate: false }));
 
   app.use((req, res, next) => {
     const start = process.hrtime.bigint();
@@ -51,7 +51,7 @@ export function createApp({ repo, tokens, logger = console, loginRateLimit }) {
     if (res.headersSent) {
       return next(err);
     }
-    if (err.type === 'entity.parse.failed' || err.type === 'entity.too.large') {
+    if (err.expose && err.status >= 400 && err.status < 500) {
       return res.status(err.status).json({ error: 'invalid_request' });
     }
     logger.error(JSON.stringify({ error: err.message, path: req.path }));
