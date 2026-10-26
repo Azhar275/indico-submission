@@ -1,0 +1,15 @@
+{
+  "theme": "base",
+  "themeVariables": {
+    "fontSize": "15px",
+    "fontFamily": "Helvetica, Arial, sans-serif"
+  },
+  "flowchart": {
+    "wrappingWidth": 340,
+    "nodeSpacing": 35,
+    "rankSpacing": 70,
+    "padding": 12,
+    "curve": "basis"
+  },
+  "layout": "dagre"
+}

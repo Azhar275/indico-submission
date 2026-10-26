@@ -1,0 +1,32 @@
+{
+  "name": "items-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "seed": "node src/seed.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "bcryptjs": "3.0.3",
+    "express": "5.3.0",
+    "express-rate-limit": "8.7.1",
+    "fast-jwt": "6.2.4",
+    "helmet": "8.3.0",
+    "pg": "8.23.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.13.0",
+    "eslint-plugin-security": "4.2.0",
+    "globals": "17.13.0",
+    "supertest": "7.3.1"
+  }
+}

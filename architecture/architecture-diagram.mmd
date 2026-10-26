@@ -1,0 +1,61 @@
+flowchart TB
+  user([Internet clients])
+
+  subgraph github[GitHub]
+    direction LR
+    dev([Developer]) -->|pull request| repo[Repository<br/>branch protection · required checks]
+    repo --> gha[GitHub Actions<br/>Gitleaks · SonarQube · Trivy · Checkov · ZAP]
+    gha -->|all gates pass| envprod{{Environment: production<br/>required reviewer}}
+  end
+
+  subgraph aws[AWS production account · ap-southeast-3]
+    direction TB
+    sts[IAM OIDC provider + STS<br/>1h credentials · sub pinned to repo + environment]
+    waf[AWS WAF<br/>managed rules · SQLi · IP reputation<br/>rate limit · block Content-Encoding: br]
+
+    subgraph vpc[VPC 10.20.0.0/16 · 2 Availability Zones]
+      direction TB
+      subgraph public[Public subnets]
+        alb[Application Load Balancer<br/>HTTPS 443 only · TLS 1.3/1.2 · port 80 closed]
+      end
+      subgraph private_app[Private app subnets · no route to internet]
+        ecs[ECS Fargate service: items-api<br/>non-root · read-only root FS · no public IP]
+        vpce[VPC endpoints<br/>ECR api/dkr · S3 · Secrets Manager · Logs · KMS]
+      end
+      subgraph private_db[Private DB subnets · isolated]
+        rds[(RDS PostgreSQL<br/>encrypted · TLS enforced · not publicly accessible)]
+      end
+    end
+
+    ecr[Amazon ECR<br/>immutable tags · scan on push · KMS]
+    sm[Secrets Manager<br/>DB credentials · JWT secret]
+    kms[KMS customer-managed key]
+    cw[CloudWatch Logs · alarms]
+    audit[CloudTrail multi-region · log file validation<br/>GuardDuty · VPC Flow Logs → S3 + KMS]
+  end
+
+  user -->|HTTPS| waf --> alb
+  alb -->|SG: tcp/3000 from ALB SG only| ecs
+  ecs -->|SG: tcp/5432 from app SG only| rds
+  ecs --- vpce
+  vpce -.->|pull image| ecr
+  vpce -.->|secrets at task start| sm
+  vpce -.->|app logs| cw
+  sm -.-> kms
+  rds -.-> kms
+  ecr -.-> kms
+
+  envprod -->|OIDC token| sts
+  sts -->|ci-deploy role: push image| ecr
+  sts -->|ci-deploy role: update service| ecs
+
+  classDef public fill:#fde2e1,stroke:#c0392b,color:#000
+  classDef private fill:#e1f0fd,stroke:#2471a3,color:#000
+  classDef data fill:#e8f8e8,stroke:#1e8449,color:#000
+  classDef ci fill:#f4ecf7,stroke:#7d3c98,color:#000
+  classDef security fill:#fef9e7,stroke:#b7950b,color:#000
+  class waf,alb public
+  class ecs,vpce private
+  class rds data
+  class dev,repo,gha,envprod ci
+  class sts,ecr,sm,kms,cw,audit security

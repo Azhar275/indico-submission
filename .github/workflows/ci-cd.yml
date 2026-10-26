@@ -1,0 +1,226 @@
+name: CI/CD pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  TRIVY_IMAGE: aquasec/trivy@sha256:790fd66d1697395d8693d1acaa1ea702406a20f109b6fc7bac8db623eca6c06c
+  CHECKOV_IMAGE: bridgecrew/checkov@sha256:4b65e89f1fde292249fc0aa0d0db43302c036dfe39f7370b2d3517571082b894
+  GITLEAKS_IMAGE: zricethezav/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
+  TERRAFORM_IMAGE: hashicorp/terraform@sha256:4d1b496a256f2989bccdb04b9104a4ede97234b10fba90259e173e905ec4fb58
+  TRIVY_CACHE_DIR: ${{ github.workspace }}/.trivy-cache
+
+jobs:
+  source-validation:
+    name: Source validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+
+  secret-scan:
+    name: Secret scanning (Gitleaks)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Scan full git history
+        run: |
+          mkdir -p reports
+          docker run --rm --user "$(id -u):$(id -g)" \
+            -e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0=/repo \
+            -v "$PWD:/repo" -w /repo "$GITLEAKS_IMAGE" \
+            git . --redact --verbose \
+            --report-format json --report-path reports/gitleaks.json
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: secret-scan-report
+          path: reports/
+
+  sast:
+    name: SAST (SonarQube)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      sonarqube:
+        image: sonarqube@sha256:0b3408443fb6a311253de27941b10977c9b977fd53be2265947bfe14161308b8
+        env:
+          SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+        ports:
+          - 9000:9000
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Analyse code and enforce quality gate
+        env:
+          SONAR_URL: http://localhost:9000
+          SCANNER_NETWORK: host
+          REPORT_DIR: reports/sonarqube
+        run: ./scripts/sonarqube-scan.sh
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: sast-report
+          path: reports/
+
+  sca:
+    name: SCA (Trivy)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Scan package-lock.json
+        run: ./scripts/trivy-gate.sh fs app sca
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: sca-report
+          path: reports/
+
+  iac-scan:
+    name: IaC scanning (Checkov, Trivy)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: terraform fmt and validate
+        run: |
+          docker run --rm -v "$PWD/terraform:/tf" -w /tf "$TERRAFORM_IMAGE" fmt -check -recursive
+          docker run --rm -v "$PWD/terraform:/tf" -w /tf "$TERRAFORM_IMAGE" init -backend=false -input=false
+          docker run --rm -v "$PWD/terraform:/tf" -w /tf "$TERRAFORM_IMAGE" validate
+      - name: Checkov
+        run: |
+          mkdir -p reports/checkov
+          docker run --rm -v "$PWD:/work" -w /work/terraform "$CHECKOV_IMAGE" \
+            --config-file .checkov.yaml -o cli -o json --output-file-path /work/reports/checkov \
+            && status=0 || status=$?
+          cat reports/checkov/results_cli.txt
+          exit "$status"
+      - name: Trivy config
+        if: success() || failure()
+        run: ./scripts/trivy-gate.sh config terraform iac-trivy
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: iac-report
+          path: reports/
+
+  image:
+    name: Image build and container scan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Build image
+        run: |
+          docker build -t "items-api:${GITHUB_SHA}" app
+          docker save -o image.tar "items-api:${GITHUB_SHA}"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: image
+          path: image.tar
+          retention-days: 1
+      - name: Trivy image scan (vulnerabilities and secrets)
+        run: ./scripts/trivy-gate.sh image image.tar image
+      - name: Node.js runtime security-release gate
+        if: success() || failure()
+        run: |
+          mkdir -p reports
+          docker run --rm --entrypoint node -v "$PWD/scripts:/scripts:ro" "items-api:${GITHUB_SHA}" \
+            /scripts/check-node-runtime.mjs | tee reports/node-runtime.txt
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: container-report
+          path: reports/
+
+  dast:
+    name: DAST (OWASP ZAP)
+    needs: image
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: image
+      - name: Load the image built in this run
+        run: |
+          docker load -i image.tar
+          docker tag "items-api:${GITHUB_SHA}" items-api:local
+      - name: Authenticated ZAP API scan against an ephemeral environment
+        run: ./scripts/dast-scan.sh
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: dast-report
+          path: reports/
+
+  deploy:
+    name: Deploy to production (simulated)
+    needs: [source-validation, secret-scan, sast, sca, iac-scan, image, dast]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: image
+      - name: Assume deploy role with GitHub OIDC
+        if: vars.AWS_DEPLOY_ROLE_ARN != ''
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          role-session-name: gha-${{ github.run_id }}-${{ github.run_attempt }}
+          aws-region: ap-southeast-3
+      - name: Deployment simulation
+        run: |
+          docker load -i image.tar
+          echo "All security gates passed and the production environment was approved."
+          echo "A real deployment would run:"
+          echo "  1. aws ecr get-login-password | docker login <account>.dkr.ecr.ap-southeast-3.amazonaws.com"
+          echo "  2. docker push <ecr-repo>:${GITHUB_SHA} and record the image digest"
+          echo "  3. aws ecs register-task-definition with image <ecr-repo>@<digest>"
+          echo "  4. aws ecs update-service --cluster items-api-prod --service api --task-definition <new-revision>"
+          echo "  5. aws ecs wait services-stable --cluster items-api-prod --services api"

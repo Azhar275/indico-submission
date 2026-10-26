@@ -1,0 +1,6 @@
+bucket       = "items-api-tfstate-444455556666"
+key          = "items-api/dev/terraform.tfstate"
+region       = "ap-southeast-3"
+encrypt      = true
+kms_key_id   = "alias/items-api-tfstate"
+use_lockfile = true

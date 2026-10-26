@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: Items API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+paths:
+  /health:
+    get:
+      responses:
+        "200":
+          description: Liveness check
+  /ready:
+    get:
+      responses:
+        "200":
+          description: Database reachable
+  /auth/login:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  example: someone@example.com
+                password:
+                  type: string
+                  example: not-a-real-password
+      responses:
+        "200":
+          description: JWT issued
+        "401":
+          description: Invalid credentials
+  /items:
+    get:
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Items owned by the caller
+    post:
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                  example: Laptop
+                description:
+                  type: string
+                  example: Work laptop
+      responses:
+        "201":
+          description: Item created
+  /items/search:
+    get:
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+            example: Lap
+      responses:
+        "200":
+          description: Matching items owned by the caller
+  /items/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Item
+        "404":
+          description: Not found or owned by someone else

@@ -1,0 +1,9 @@
+aws_account_id         = "444455556666"
+environment            = "dev"
+owner                  = "platform-team"
+github_repository      = "Azhar275/indico-submission"
+image_digest           = "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+vpc_cidr               = "10.30.0.0/16"
+desired_count          = 1
+db_instance_class      = "db.t4g.micro"
+db_multi_az            = false

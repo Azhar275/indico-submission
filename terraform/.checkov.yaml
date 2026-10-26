@@ -1,0 +1,13 @@
+directory:
+  - .
+framework:
+  - terraform
+external-checks-dir:
+  - policies
+skip-path:
+  - bad-examples
+compact: true
+skip-check:
+  - CKV_AWS_118
+  - CKV2_AWS_11
+  - CKV2_AWS_57
