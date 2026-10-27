@@ -1,6 +1,6 @@
 # Scan Results and Evidence
 
-Raw outputs are in [`raw/`](raw/). Every pipeline run also uploads its reports as artifacts (`secret-scan-report`, `sast-report`, `sca-report`, `iac-report`, `container-report`, `dast-report`).
+Raw outputs are in [`raw/`](raw/). They were captured locally with the same pinned scanner images and commands the pipeline uses. Every pipeline run also uploads its reports as artifacts (`secret-scan-report`, `sast-report`, `sca-report`, `iac-report`, `container-report`, `dast-report`).
 
 ## 1. Pipeline runs
 
@@ -11,7 +11,9 @@ Raw outputs are in [`raw/`](raw/). Every pipeline run also uploads its reports a
 | 3. Scenario B: public database | [Pull request #1](https://github.com/Azhar275/indico-submission/pull/1) (closed, not merged) | ❌ IaC scanning only: Checkov `CKV_AWS_17`, Trivy `AWS-0180` · deploy skipped | [PR #1 checks](https://github.com/Azhar275/indico-submission/pull/1/checks) | [run-3-public-db-check.png](screenshots/run-3-public-db-check.png) |
 | 4. Hard-coded secret | [Pull request #2](https://github.com/Azhar275/indico-submission/pull/2) (closed, not merged) | ❌ secret scanning only: Gitleaks `generic-api-key` (random, fake key) · deploy skipped | [PR #2 checks](https://github.com/Azhar275/indico-submission/pull/2/checks) | [run-4-hardcoded-secrets.png](screenshots/run-4-hardcoded-secrets.png) |
 
-Runs 1 and 2 are the first two runs listed on the workflow page.
+Runs 1 and 2 are runs **#1** and **#2** on the workflow page.
+
+**A later red run on `main`:** after these runs, one push to `main` failed only the secret scan. Gitleaks scans every branch in the repository, and the test branch from run 4 (with its fake key) hadn't been deleted yet. Deleting the branch fixed it, and the next run was green. The fake key was never on `main`.
 
 ## 2. Before and after, per gate
 
@@ -26,7 +28,7 @@ Runs 1 and 2 are the first two runs listed on the workflow page.
 | Container: Dockerfile | 0 misconfigurations | same | [`container-trivy-dockerfile.txt`](raw/container-trivy-dockerfile.txt) |
 | Container: secrets in layers | none (Trivy secret scan, `docker history`) | same | [`container-docker-history.txt`](raw/container-docker-history.txt) |
 | SAST: SonarQube | quality gate OK, 0 security issues, 0 hotspots (SQL injection **not** detected, see §3) | same | [`sast-sonarqube.txt`](raw/sast-sonarqube.txt) |
-| IaC: Checkov | 137 passed, 0 failed, 3 skipped (accepted risks AR-001 to AR-003) | same | [`iac-checkov.txt`](raw/iac-checkov.txt) |
+| IaC: Checkov | 137 passed, 0 failed; 3 checks excluded by policy (accepted risks AR-001 to AR-003) | same | [`iac-checkov.txt`](raw/iac-checkov.txt) |
 | IaC: Trivy `config` | 0 HIGH/CRITICAL; 1 MEDIUM tracked (VPC flow logs, AR-001) | same | [`iac-trivy-config.txt`](raw/iac-trivy-config.txt) |
 | IaC: `terraform fmt` / `validate` | OK | same | [`iac-terraform-validate.txt`](raw/iac-terraform-validate.txt) |
 | DAST: ZAP | ❌ **SQL Injection [40018]** on `GET /items/search?q=`; WARN: server error 500, XSS-in-JSON | ✅ 0 FAIL; 1 WARN (XSS-in-JSON false positive); 119 rules passed | [`dast-zap-vulnerable.txt`](raw/dast-zap-vulnerable.txt), [`dast-zap-fixed.txt`](raw/dast-zap-fixed.txt) |
@@ -61,4 +63,4 @@ Runs 1 and 2 are the first two runs listed on the workflow page.
 
 ## 5. Base image: why npm was removed
 
-The stock `node:24.22.0-alpine` image ships npm with its own dependencies: 15 known vulnerabilities, 5 HIGH, one with no fix available (`http-cache-semantics`). The application never runs npm in production, so the Dockerfile deletes npm, npx, corepack and yarn from the runtime image, and all 15 findings disappear. Evidence: [`container-trivy-base-image-before-npm-removal.txt`](raw/container-trivy-base-image-before-npm-removal.txt).
+The stock `node:24.22.0-alpine` image ships npm with its own dependencies: 15 known vulnerabilities (5 HIGH, 9 MEDIUM, 1 LOW), one HIGH with no fix available (`http-cache-semantics`). The application never runs npm in production, so the Dockerfile deletes npm, npx, corepack and yarn from the runtime image, and all 15 findings disappear. Evidence: [`container-trivy-base-image-before-npm-removal.txt`](raw/container-trivy-base-image-before-npm-removal.txt).

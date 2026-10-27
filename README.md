@@ -1,4 +1,4 @@
-# DevSecOps Home Test
+# Items API: Secure CI/CD Pipeline
 
 A small Node.js API ("items-api") for AWS ECS Fargate, protected by a GitHub Actions pipeline that blocks unsafe releases.
 
@@ -23,8 +23,9 @@ Details: [`architecture/security-design.md`](architecture/security-design.md).
 
 ## Prerequisites and execution
 
-- Docker. Node.js 24+ is only needed to run the tests outside Docker.
-- Every security tool runs as a container image pinned by digest, so nothing else needs to be installed.
+- Docker, plus Bash, curl, OpenSSL and Python 3 for the scripts (preinstalled on macOS, most Linux distributions and GitHub runners).
+- Node.js 24+ to run the unit tests outside Docker.
+- The security scanners themselves (Trivy, Checkov, Gitleaks, SonarQube, OWASP ZAP, Terraform) run as container images pinned by digest. Only `scripts/show-secret-in-state.sh` needs the Terraform CLI installed locally.
 
 Create a local, git-ignored `.env` containing `DB_PASSWORD=<any value>` and `JWT_SECRET=<at least 32 characters>`. Then:
 
@@ -46,11 +47,11 @@ The first command starts PostgreSQL and the API container on `127.0.0.1:3000`; t
 | SCA | `sca` | Trivy on `package-lock.json` | Any CRITICAL; any HIGH with a fix available |
 | Secret scanning | `secret-scan` | Gitleaks, full Git history | Any finding |
 | IaC scanning | `iac-scan` | `terraform validate`, Checkov, Trivy | Any failed Checkov check; any HIGH/CRITICAL misconfiguration |
-| Image build and container scan | `image` | Docker build, Trivy (vulnerabilities + secrets), Node.js runtime gate | Same severity rule as SCA; any secret; a missed Node.js security release |
+| Image build and container scan | `image` | Docker build, Trivy (vulnerabilities + secrets), Node.js runtime gate | Same severity rule as SCA, for both vulnerabilities and secrets found in the image; a missed Node.js security release |
 | DAST | `dast` | OWASP ZAP, authenticated, against a temporary container | Injection-class alerts (`.zap/rules.tsv`) |
 | Deployment | `deploy` | GitHub Environment `production` + OIDC | Runs only on `main`, only after **every** job passed and a reviewer approved. Simulated |
 
-- **Evidence:** every job uploads its report as a pipeline artifact.
+- **Evidence:** every scanning job uploads its report as a pipeline artifact.
 - **Lower-severity findings** (Medium, Low) don't block. They're tracked under the [vulnerability policy](security/vulnerability-policy.md).
 - **Least privilege and no secrets in logs:**
   - the default token is read-only, and only `deploy` can request AWS credentials;
