@@ -1,19 +1,19 @@
-2026-10-26T13:13:50+08:00	INFO	[vuln] Vulnerability scanning is enabled
-2026-10-26T13:13:50+08:00	INFO	Detected OS	family="alpine" version="3.24.2"
-2026-10-26T13:13:50+08:00	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=19
-2026-10-26T13:13:50+08:00	INFO	Number of language-specific files	num=1
-2026-10-26T13:13:50+08:00	INFO	[node-pkg] Detecting vulnerabilities...
-2026-10-26T13:13:50+08:00	WARN	Unable to get vulnerability details (CVE may be rejected)	err.message="failed to get vulnerability" err.err="failed to get vulnerability: no vulnerability details" err.time=2026-10-26T05:13:50.54083Z err.trace="01M5VA256CR99Y170D9QY23NCC" err.context.vuln_id="CVE-2026-107891" err.stacktrace="Oops: no vulnerability details\n  --- at github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:29 Config.GetVulnerability.func1()\n  --- at go.etcd.io/bbolt@v1.5.0/db.go:953 DB.View()\n  --- at github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:25 Config.GetVulnerability()\n  --- at github.com/aquasecurity/trivy/pkg/vulnerability/vulnerability.go:78 Client.FillInfo()\n  --- at github.com/aquasecurity/trivy/pkg/scan/local/service.go:187 Service.ScanTarget()\n  --- at github.com/aquasecurity/trivy/pkg/scan/local/service.go:127 Service.Scan()\n  --- at github.com/aquasecurity/trivy/pkg/scan/service.go:63 Service.ScanArtifact()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:710 runner.scan()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:302 runner.scanArtifact()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:219 runner.ScanImage()\nThrown: failed to get vulnerability\n  --- at github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:37 Config.GetVulnerability()\n  --- at github.com/aquasecurity/trivy/pkg/vulnerability/vulnerability.go:78 Client.FillInfo()\n  --- at github.com/aquasecurity/trivy/pkg/scan/local/service.go:187 Service.ScanTarget()\n  --- at github.com/aquasecurity/trivy/pkg/scan/local/service.go:127 Service.Scan()\n  --- at github.com/aquasecurity/trivy/pkg/scan/service.go:63 Service.ScanArtifact()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:710 runner.scan()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:302 runner.scanArtifact()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:219 runner.ScanImage()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:450 run()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:409 Run()"
-2026-10-26T13:13:50+08:00	WARN	Unable to get vulnerability details (CVE may be rejected)	err.message="failed to get vulnerability" err.err="failed to get vulnerability: no vulnerability details" err.time=2026-10-26T05:13:50.540982Z err.trace="01M5VA256D18H1CQ3RBG2PZM8M" err.context.vuln_id="CVE-2026-107891" err.stacktrace="Oops: no vulnerability details\n  --- at github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:29 Config.GetVulnerability.func1()\n  --- at go.etcd.io/bbolt@v1.5.0/db.go:953 DB.View()\n  --- at github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:25 Config.GetVulnerability()\n  --- at github.com/aquasecurity/trivy/pkg/vulnerability/vulnerability.go:78 Client.FillInfo()\n  --- at github.com/aquasecurity/trivy/pkg/scan/local/service.go:187 Service.ScanTarget()\n  --- at github.com/aquasecurity/trivy/pkg/scan/local/service.go:127 Service.Scan()\n  --- at github.com/aquasecurity/trivy/pkg/scan/service.go:63 Service.ScanArtifact()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:710 runner.scan()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:302 runner.scanArtifact()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:219 runner.ScanImage()\nThrown: failed to get vulnerability\n  --- at github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:37 Config.GetVulnerability()\n  --- at github.com/aquasecurity/trivy/pkg/vulnerability/vulnerability.go:78 Client.FillInfo()\n  --- at github.com/aquasecurity/trivy/pkg/scan/local/service.go:187 Service.ScanTarget()\n  --- at github.com/aquasecurity/trivy/pkg/scan/local/service.go:127 Service.Scan()\n  --- at github.com/aquasecurity/trivy/pkg/scan/service.go:63 Service.ScanArtifact()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:710 runner.scan()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:302 runner.scanArtifact()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:219 runner.ScanImage()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:450 run()\n  --- at github.com/aquasecurity/trivy/pkg/commands/artifact/run.go:409 Run()"
-2026-10-26T13:13:50+08:00	WARN	Using severities from other vendors for some vulnerabilities. Read https://trivy.dev/docs/v0.76/guide/scanner/vulnerability#severity-selection for details.
-2026-10-26T13:13:50+08:00	INFO	Table result includes only package filenames. Use '--format json' option to get the full path to the package file.
+2026-10-27T00:28:24Z	INFO	[vuln] Vulnerability scanning is enabled
+2026-10-27T00:28:25Z	INFO	Detected OS	family="alpine" version="3.24.2"
+2026-10-27T00:28:25Z	INFO	[alpine] Detecting vulnerabilities...	os_version="3.24" repository="3.24" pkg_num=19
+2026-10-27T00:28:25Z	INFO	Number of language-specific files	num=1
+2026-10-27T00:28:25Z	INFO	[node-pkg] Detecting vulnerabilities...
+2026-10-27T00:28:25Z	WARN	Unable to get vulnerability details (CVE may be rejected)	err.message="failed to get vulnerability" err.err="failed to get vulnerability: no vulnerability details" err.time=2026-10-27T00:28:25.02480246Z err.trace="01M5XC48213CNPG1EGE0R18QJ3" err.context.vuln_id="CVE-2026-107891" err.stacktrace="Oops: no vulnerability details\n  --- at /home/runner/go/pkg/mod/github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:29 Config.GetVulnerability.func1()\n  --- at /home/runner/go/pkg/mod/go.etcd.io/bbolt@v1.5.0/db.go:953 DB.View()\n  --- at /home/runner/go/pkg/mod/github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:25 Config.GetVulnerability()\n  --- at /home/runner/work/trivy/trivy/pkg/vulnerability/vulnerability.go:78 Client.FillInfo()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/local/service.go:187 Service.ScanTarget()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/local/service.go:127 Service.Scan()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/service.go:63 Service.ScanArtifact()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:710 runner.scan()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:302 runner.scanArtifact()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:219 runner.ScanImage()\nThrown: failed to get vulnerability\n  --- at /home/runner/go/pkg/mod/github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:37 Config.GetVulnerability()\n  --- at /home/runner/work/trivy/trivy/pkg/vulnerability/vulnerability.go:78 Client.FillInfo()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/local/service.go:187 Service.ScanTarget()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/local/service.go:127 Service.Scan()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/service.go:63 Service.ScanArtifact()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:710 runner.scan()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:302 runner.scanArtifact()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:219 runner.ScanImage()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:450 run()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:409 Run()"
+2026-10-27T00:28:25Z	WARN	Unable to get vulnerability details (CVE may be rejected)	err.message="failed to get vulnerability" err.err="failed to get vulnerability: no vulnerability details" err.time=2026-10-27T00:28:25.026877585Z err.trace="01M5XC4822C83G432BP6RMVN64" err.context.vuln_id="CVE-2026-107891" err.stacktrace="Oops: no vulnerability details\n  --- at /home/runner/go/pkg/mod/github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:29 Config.GetVulnerability.func1()\n  --- at /home/runner/go/pkg/mod/go.etcd.io/bbolt@v1.5.0/db.go:953 DB.View()\n  --- at /home/runner/go/pkg/mod/github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:25 Config.GetVulnerability()\n  --- at /home/runner/work/trivy/trivy/pkg/vulnerability/vulnerability.go:78 Client.FillInfo()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/local/service.go:187 Service.ScanTarget()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/local/service.go:127 Service.Scan()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/service.go:63 Service.ScanArtifact()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:710 runner.scan()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:302 runner.scanArtifact()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:219 runner.ScanImage()\nThrown: failed to get vulnerability\n  --- at /home/runner/go/pkg/mod/github.com/aquasecurity/trivy-db@v0.0.0-20261012084708-cbebf2ecd6df/pkg/db/vulnerability.go:37 Config.GetVulnerability()\n  --- at /home/runner/work/trivy/trivy/pkg/vulnerability/vulnerability.go:78 Client.FillInfo()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/local/service.go:187 Service.ScanTarget()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/local/service.go:127 Service.Scan()\n  --- at /home/runner/work/trivy/trivy/pkg/scan/service.go:63 Service.ScanArtifact()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:710 runner.scan()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:302 runner.scanArtifact()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:219 runner.ScanImage()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:450 run()\n  --- at /home/runner/work/trivy/trivy/pkg/commands/artifact/run.go:409 Run()"
+2026-10-27T00:28:25Z	WARN	Using severities from other vendors for some vulnerabilities. Read https://trivy.dev/docs/v0.76/guide/scanner/vulnerability#severity-selection for details.
+2026-10-27T00:28:25Z	INFO	Table result includes only package filenames. Use '--format json' option to get the full path to the package file.
 
 Report Summary
 
 ┌──────────────────────────────────────────────────────────────────────────────────┬──────────┬─────────────────┐
 │                                      Target                                      │   Type   │ Vulnerabilities │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
-│ node:24.22.0-alpine (alpine 3.24.2)                                              │  alpine  │        0        │
+│ base.tar (alpine 3.24.2)                                                         │  alpine  │        3        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
 │ opt/yarn-v1.22.22/package.json                                                   │ node-pkg │        0        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
@@ -90,7 +90,7 @@ Report Summary
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
 │ usr/local/lib/node_modules/npm/node_modules/binary-extensions/package.json       │ node-pkg │        0        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
-│ usr/local/lib/node_modules/npm/node_modules/brace-expansion/package.json         │ node-pkg │        2        │
+│ usr/local/lib/node_modules/npm/node_modules/brace-expansion/package.json         │ node-pkg │        3        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
 │ usr/local/lib/node_modules/npm/node_modules/cacache/package.json                 │ node-pkg │        0        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
@@ -140,7 +140,7 @@ Report Summary
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
 │ usr/local/lib/node_modules/npm/node_modules/init-package-json/package.json       │ node-pkg │        0        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
-│ usr/local/lib/node_modules/npm/node_modules/ip-address/package.json              │ node-pkg │        0        │
+│ usr/local/lib/node_modules/npm/node_modules/ip-address/package.json              │ node-pkg │        5        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
 │ usr/local/lib/node_modules/npm/node_modules/is-cidr/package.json                 │ node-pkg │        0        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
@@ -242,7 +242,7 @@ Report Summary
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
 │ usr/local/lib/node_modules/npm/node_modules/path-scurry/package.json             │ node-pkg │        0        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
-│ usr/local/lib/node_modules/npm/node_modules/postcss-selector-parser/package.json │ node-pkg │        0        │
+│ usr/local/lib/node_modules/npm/node_modules/postcss-selector-parser/package.json │ node-pkg │        1        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
 │ usr/local/lib/node_modules/npm/node_modules/proc-log/package.json                │ node-pkg │        0        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
@@ -302,7 +302,7 @@ Report Summary
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
 │ usr/local/lib/node_modules/npm/node_modules/tuf-js/package.json                  │ node-pkg │        0        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
-│ usr/local/lib/node_modules/npm/node_modules/undici/package.json                  │ node-pkg │        2        │
+│ usr/local/lib/node_modules/npm/node_modules/undici/package.json                  │ node-pkg │        5        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
 │ usr/local/lib/node_modules/npm/node_modules/util-deprecate/package.json          │ node-pkg │        0        │
 ├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
@@ -324,30 +324,86 @@ Legend:
 - '0': Clean (no security findings detected)
 
 
+base.tar (alpine 3.24.2)
+========================
+Total: 3 (UNKNOWN: 2, LOW: 0, MEDIUM: 1, HIGH: 0, CRITICAL: 0)
+
+┌────────────┬─────────────────┬──────────┬────────┬───────────────────┬───────────────┬───────────────────────────────────────────────────────────┐
+│  Library   │  Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version │                           Title                           │
+├────────────┼─────────────────┼──────────┼────────┼───────────────────┼───────────────┼───────────────────────────────────────────────────────────┤
+│ musl       │ CVE-2026-107891 │ UNKNOWN  │ fixed  │ 1.2.6-r2          │ 1.2.6-r3      │                                                           │
+├────────────┤                 │          │        │                   │               ├───────────────────────────────────────────────────────────┤
+│ musl-utils │                 │          │        │                   │               │                                                           │
+├────────────┼─────────────────┼──────────┤        ├───────────────────┼───────────────┼───────────────────────────────────────────────────────────┤
+│ zlib       │ CVE-2026-85091  │ MEDIUM   │        │ 1.3.2-r0          │ 1.3.2-r1      │ zlib versions 1.3.1.2 through 1.3.2 contain a heap buffer │
+│            │                 │          │        │                   │               │ overflow vul ......                                       │
+│            │                 │          │        │                   │               │ https://avd.aquasec.com/nvd/cve-2026-85091                │
+└────────────┴─────────────────┴──────────┴────────┴───────────────────┴───────────────┴───────────────────────────────────────────────────────────┘
+
 Node.js (node-pkg)
 ==================
-Total: 5 (HIGH: 5, CRITICAL: 0)
+Total: 15 (UNKNOWN: 0, LOW: 1, MEDIUM: 9, HIGH: 5, CRITICAL: 0)
 
-┌─────────────────────────────────────┬─────────────────┬──────────┬──────────┬───────────────────┬──────────────────────────────┬──────────────────────────────────────────────────────────────┐
-│               Library               │  Vulnerability  │ Severity │  Status  │ Installed Version │        Fixed Version         │                            Title                             │
-├─────────────────────────────────────┼─────────────────┼──────────┼──────────┼───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
-│ brace-expansion (package.json)      │ CVE-2026-102276 │ HIGH     │ fixed    │ 5.0.9             │ 5.0.10, 3.0.7, 2.1.5, 1.1.19 │ brace-expansion: brace-expansion: Denial of Service via      │
-│                                     │                 │          │          │                   │                              │ stack exhaustion from crafted brace patterns...              │
-│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-102276                  │
-│                                     ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
-│                                     │ CVE-2026-102278 │          │          │                   │ 5.0.11, 3.0.8, 2.1.6, 1.1.20 │ brace-expansion: brace-expansion: Denial of Service via      │
-│                                     │                 │          │          │                   │                              │ uncontrolled recursion in nested brace patterns...           │
-│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-102278                  │
-├─────────────────────────────────────┼─────────────────┤          ├──────────┼───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
-│ http-cache-semantics (package.json) │ CVE-2026-93748  │          │ affected │ 4.2.0             │                              │ http-cache-semantics: http-cache-semantics: Information      │
-│                                     │                 │          │          │                   │                              │ Disclosure via max-stale directive                           │
-│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-93748                   │
-├─────────────────────────────────────┼─────────────────┤          ├──────────┼───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
-│ undici (package.json)               │ CVE-2026-109869 │          │ fixed    │ 6.28.0            │ 6.29.1, 7.30.1, 8.12.2       │ undici: undici: Denial of Service via unhandled stream error │
-│                                     │                 │          │          │                   │                              │ on excessive content...                                      │
-│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-109869                  │
-│                                     ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
-│                                     │ CVE-2026-19534  │          │          │                   │ 6.28.1, 7.29.1, 8.10.2       │ undici: undici: Denial of Service via unrequested WebSocket  │
-│                                     │                 │          │          │                   │                              │ subprotocol                                                  │
-│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-19534                   │
-└─────────────────────────────────────┴─────────────────┴──────────┴──────────┴───────────────────┴──────────────────────────────┴──────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────┬─────────────────┬──────────┬──────────┬───────────────────┬──────────────────────────────┬──────────────────────────────────────────────────────────────┐
+│                Library                 │  Vulnerability  │ Severity │  Status  │ Installed Version │        Fixed Version         │                            Title                             │
+├────────────────────────────────────────┼─────────────────┼──────────┼──────────┼───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ brace-expansion (package.json)         │ CVE-2026-102276 │ HIGH     │ fixed    │ 5.0.9             │ 5.0.10, 3.0.7, 2.1.5, 1.1.19 │ brace-expansion: brace-expansion: Denial of Service via      │
+│                                        │                 │          │          │                   │                              │ stack exhaustion from crafted brace patterns...              │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-102276                  │
+│                                        ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-102278 │          │          │                   │ 5.0.11, 3.0.8, 2.1.6, 1.1.20 │ brace-expansion: brace-expansion: Denial of Service via      │
+│                                        │                 │          │          │                   │                              │ uncontrolled recursion in nested brace patterns...           │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-102278                  │
+│                                        ├─────────────────┼──────────┤          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-102277 │ MEDIUM   │          │                   │ 5.0.12, 3.0.9, 2.1.7, 1.1.21 │ brace-expansion: brace-expansion: Denial of Service via      │
+│                                        │                 │          │          │                   │                              │ crafted brace patterns                                       │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-102277                  │
+├────────────────────────────────────────┼─────────────────┼──────────┼──────────┼───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ http-cache-semantics (package.json)    │ CVE-2026-93748  │ HIGH     │ affected │ 4.2.0             │                              │ http-cache-semantics: http-cache-semantics: Information      │
+│                                        │                 │          │          │                   │                              │ Disclosure via max-stale directive                           │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-93748                   │
+├────────────────────────────────────────┼─────────────────┼──────────┼──────────┼───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ ip-address (package.json)              │ CVE-2026-101910 │ MEDIUM   │ fixed    │ 10.5.0            │ 10.5.1                       │ ip-address: ip-address: Security boundary bypass via         │
+│                                        │                 │          │          │                   │                              │ unclassified NAT64 local-use address range                   │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-101910                  │
+│                                        ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-101911 │          │          │                   │ 10.7.1                       │ ip-address: ip-address: Denial of Service via unbounded IPv6 │
+│                                        │                 │          │          │                   │                              │ address parsing                                              │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-101911                  │
+│                                        ├─────────────────┤          │          │                   │                              ├──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-101912 │          │          │                   │                              │ ip-address: ip-address: Access control bypass via            │
+│                                        │                 │          │          │                   │                              │ cross-family subnet comparison                               │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-101912                  │
+│                                        ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-101913 │          │          │                   │ 10.5.1                       │ ip-address: ip-address: Security bypass via incomplete IPv6  │
+│                                        │                 │          │          │                   │                              │ link-local address validation                                │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-101913                  │
+│                                        ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-111997 │          │          │                   │ 10.7.4                       │ ip-address: ip-address: Denial of Service via excessive      │
+│                                        │                 │          │          │                   │                              │ percent characters in IPv6 address...                        │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-111997                  │
+├────────────────────────────────────────┼─────────────────┤          │          ├───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ postcss-selector-parser (package.json) │ CVE-2026-104844 │          │          │ 7.1.4             │ 7.1.6                        │ postcss-selector-parser: postcss-selector-parser: Denial of  │
+│                                        │                 │          │          │                   │                              │ Service via crafted CSS selectors                            │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-104844                  │
+├────────────────────────────────────────┼─────────────────┼──────────┤          ├───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ undici (package.json)                  │ CVE-2026-109869 │ HIGH     │          │ 6.28.0            │ 6.29.1, 7.30.1, 8.12.2       │ undici: undici: Denial of Service via unhandled stream error │
+│                                        │                 │          │          │                   │                              │ on excessive content...                                      │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-109869                  │
+│                                        ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-19534  │          │          │                   │ 6.28.1, 7.29.1, 8.10.2       │ undici: undici: Denial of Service via unrequested WebSocket  │
+│                                        │                 │          │          │                   │                              │ subprotocol                                                  │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-19534                   │
+│                                        ├─────────────────┼──────────┤          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-109924 │ MEDIUM   │          │                   │ 6.29.1, 7.30.1, 8.12.2       │ undici: undici: Denial of Service via memory exhaustion in   │
+│                                        │                 │          │          │                   │                              │ EventSource client                                           │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-109924                  │
+│                                        ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-85024  │          │          │                   │ 6.28.1, 7.29.1, 8.10.2       │ undici: undici: Denial of Service via unhandled error in     │
+│                                        │                 │          │          │                   │                              │ WebSocket permessage-deflate decompression...                │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-85024                   │
+│                                        ├─────────────────┼──────────┤          │                   │                              ├──────────────────────────────────────────────────────────────┤
+│                                        │ CVE-2026-18540  │ LOW      │          │                   │                              │ undici: undici: HTTP response splitting via retry            │
+│                                        │                 │          │          │                   │                              │ interceptor                                                  │
+│                                        │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-18540                   │
+└────────────────────────────────────────┴─────────────────┴──────────┴──────────┴───────────────────┴──────────────────────────────┴──────────────────────────────────────────────────────────────┘
